@@ -5,7 +5,7 @@ class LogIn extends Component {
     return (
      <div class="container">
         <div class="row">
-           <div class="col-12">
+           <div class="col-12 col-lg-8 offset-lg-2">
              <form method="post">
                  <div class="form-group">
                     <label for="user_name_input">Enter your name</label>
