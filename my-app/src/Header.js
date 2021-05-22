@@ -1,0 +1,36 @@
+import React, {Component} from "react";
+import { Link } from 'react-router-dom';
+import './Header.css';
+import timb from './timb.png';
+
+class Header extends Component {
+  render() {
+    return (
+      <div>
+        <nav className="navbar navbar-expand-sm sticky-top">
+        <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span className="navbar-toggler-icon"></span>
+        </button>
+          <div className="container-fluid">
+            <a href="#" className="navbar-brad">Smart Scheduler</a>
+            <div id="navbarResponsive">
+              <ul className="navbar-nav ml-auto">
+                <li className="nav-item">
+                  <Link to='/creditcard' className="nav-link">Log in</Link>
+                </li>
+                <li className="nav-item">
+                  <Link to='/registration' className="nav-link">Log up</Link>
+                </li>
+                <li className="nav-item">
+                  <Link to='/logout' className="nav-link">Log out</Link>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </nav>
+      </div>
+    );
+  }
+}
+
+export default Header;

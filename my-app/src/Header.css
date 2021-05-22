@@ -1,0 +1,14 @@
+.navbar-brad img {
+  height: 40px;
+}
+
+.navbar {
+  background-color: #222;
+  height: 60px;
+  font-size: 21px;
+}
+
+a {
+  color: #FFFFFF;
+  text-decoration: none;
+}
