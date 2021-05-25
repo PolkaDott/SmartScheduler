@@ -1,7 +1,6 @@
-import React, {Component} from "react";
+import React from "react";
 
-class LogOut extends Component {
-  render() {
+function LogOut() {
     return (
       <div>
         <p>
@@ -19,7 +18,6 @@ class LogOut extends Component {
         </div>
       </div>
     );
-  }
 }
 
 export default LogOut;

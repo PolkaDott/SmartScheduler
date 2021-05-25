@@ -1,21 +1,19 @@
-import React, {Component} from "react";
+import React from "react";
 import { Switch, Route } from 'react-router-dom';
-import CreditCard from './CreditCard.js';
 import Registration from './Registration.js';
 import LogOut from './LogOut.js';
 import LogIn from './LogIn.js';
+import HomePage from './HomePage.js';
 
-class Main extends Component {
-  render() {
+function Main() {
     return (
       <Switch>
-        <Route path='/creditcard' component={CreditCard}/>
+        <Route exact path='/' component={HomePage}/>
         <Route path='/registration' component={Registration}/>
         <Route path='/logout' component={LogOut}/>
         <Route path='/login' component={LogIn}/>
       </Switch>
     );
-  }
 }
 
 export default Main;
