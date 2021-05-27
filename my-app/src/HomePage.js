@@ -1,9 +1,16 @@
-import React from "react";
+import React, {useState} from "react";
+import { useHistory } from "react-router-dom";
+import FetchAPI from "./FetchAPI.js";
 
-function HomePage() {
-    return (
-      <div>Home</div>
-    );
+export default function HomePage() {
+  const history = useHistory();
+  var refresh = FetchAPI.getRefresh();
+  if (!refresh){
+    history.push('/login')
+  }
+
+  return (
+    <div>Home
+    </div>
+  );
 }
-
-export default HomePage;

@@ -1,13 +1,14 @@
 import Header from './Header.js';
 import Main from './Main.js';
+import { AuthContext } from './AuthContext.js';
+import {useState} from "react";
 
-function App() {
+export default function App() {
+  const [isAuth, setAuth] = useState(0);
   return (
-    <div>
+    <AuthContext.Provider value={[isAuth, setAuth]}>
       <Header/>
       <Main/>
-    </div>
+    </AuthContext.Provider>
   );
 }
-
-export default App;

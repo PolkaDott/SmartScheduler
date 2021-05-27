@@ -1,23 +1,38 @@
-import React, {useRef, useState} from "react";
+import React, {useRef, useState, useContext} from "react";
 import FetchAPI from "./FetchAPI.js";
+import { useHistory } from "react-router-dom";
+import { AuthContext } from "./AuthContext.js";
 
-function LogIn() {
+export default function LogIn() {
+  const history = useHistory();
+  var refreshToken = FetchAPI.getRefresh();
+  if (refreshToken){
+    history.push('/')
+  }
   let [errorMessage, setErrorMessage] = useState('');
   var usernameRef = useRef();
   var passwordRef = useRef();
+  const [, setAuth] = useContext(AuthContext);
 
   var submitButton = (event) => {
     event.preventDefault();
-    (new FetchAPI()).getTokenData(usernameRef.current.value, passwordRef.current.value)
+    FetchAPI.getTokenData(usernameRef.current.value, passwordRef.current.value)
     .then(res => {
       if (res === 0)
-        setErrorMessage('Возникли проблемы с выполнением запроса');
-      else if (res === 200 || res === 201)
-        setErrorMessage('');
+        setErrorMessage('Occured request errors. Write to administrator');
+      else if (res === 200 || res === 201){
+        var timer = setInterval(()=>{
+          if (FetchAPI.getRefresh()){
+            setAuth(1);
+            history.push('/');
+            clearInterval(timer);
+          }
+        }, 10);
+      }
       else if (res === 401)
-        setErrorMessage('Логин или пароль введены неверно');
+        setErrorMessage('Login or password are wrong');
       else
-        setErrorMessage('Возникла неизвестная ошибка')
+        setErrorMessage('Unknown error. Write to administrator')
     });
   };
 
@@ -27,15 +42,16 @@ function LogIn() {
           <div className="col-12 col-lg-8 offset-lg-2">
             <form onSubmit={submitButton} >
                 <div className="form-group">
-                  <label htmlFor="Input2">Enter your name</label>
-                  <input ref={usernameRef} type="text" id="Input2" className="form-control" placeholder="Enter name" required/>
+                  <label htmlFor="Input2">Enter your username</label>
+                  <input ref={usernameRef} type="text" id="Input2" className="form-control" placeholder="Enter username" required/>
                 </div>
                 <div className="form-group">
                   <label htmlFor="Input1">Enter your password</label>
                   <input ref={passwordRef} type="password" className="form-control" id="Input1" placeholder="Password" required/>
                 </div>
                 { 
-                  errorMessage && <div id="alert" className="alert alert-danger text-center" role="alert">
+                  errorMessage &&
+                  <div id="alert" className="alert alert-danger text-center" role="alert">
                     {errorMessage}
                   </div>
                 }
@@ -46,5 +62,3 @@ function LogIn() {
     </div>
     );
 }
-
-export default LogIn;
