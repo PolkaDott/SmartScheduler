@@ -1,38 +1,25 @@
-import React, {useRef} from "react";
-
-function tryLogIn(event, usernameRef, passwordRef){
-  var formData = new FormData();
-  formData.append("username", usernameRef.current.value);
-  formData.append("password", passwordRef.current.value);
-  var myHeaders = new Headers();
-  myHeaders.append('Accept', 'application/json');
-  myHeaders.append('Content-Type' , 'application/json');
-  myHeaders.append("Access-Control-Allow-Origin", "*");
-  var hheaders = {
-    Accept : '*/*',
-    "Access-Control-Allow-Origin": "http://localhost:3000/",
-    "Access-Control-Allow-Method": "POST",
-    "Access-Control-Allow-Headers": "access-control-allow-headers,access-control-allow-methods,access-control-allow-origin,content-type"
-  }
-  var requestOptions = {
-    method: 'POST',
-    headers: hheaders,
-    body: formData,
-    redirect: 'follow'
-  };
-  fetch("http://188.225.83.42:7070/auth/login/", requestOptions)
-      .then(response => {
-        console.log('res: ' + response.status)
-      })
-  event.preventDefault();
-}
+import React, {useRef, useState} from "react";
+import FetchAPI from "./FetchAPI.js";
 
 function LogIn() {
-  
+  let [errorMessage, setErrorMessage] = useState('');
   var usernameRef = useRef();
   var passwordRef = useRef();
 
-  const submitButton = (event) => tryLogIn(event, usernameRef, passwordRef);
+  var submitButton = (event) => {
+    event.preventDefault();
+    (new FetchAPI()).getTokenData(usernameRef.current.value, passwordRef.current.value)
+    .then(res => {
+      if (res === 0)
+        setErrorMessage('Возникли проблемы с выполнением запроса');
+      else if (res === 200 || res === 201)
+        setErrorMessage('');
+      else if (res === 401)
+        setErrorMessage('Логин или пароль введены неверно');
+      else
+        setErrorMessage('Возникла неизвестная ошибка')
+    });
+  };
 
   return (
     <div className="container">
@@ -47,16 +34,11 @@ function LogIn() {
                   <label htmlFor="Input1">Enter your password</label>
                   <input ref={passwordRef} type="password" className="form-control" id="Input1" placeholder="Password" required/>
                 </div>
-    {/* {% if doest_exist %}
-                  <div id="alert" className="alert alert-danger text-center" role="alert">
-                  Username doest exists
+                { 
+                  errorMessage && <div id="alert" className="alert alert-danger text-center" role="alert">
+                    {errorMessage}
                   </div>
-                {% endif %}
-                {% if password_incorrect %}
-                  <div id="alert" className="alert alert-danger text-center" role="alert">
-                  Password is incorrect
-                  </div>
-                {% endif %}*/}
+                }
                 <button id="submit" type="submit" className="btn btn-secondary">Submit</button>
             </form>
           </div>
