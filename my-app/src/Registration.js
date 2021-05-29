@@ -5,10 +5,6 @@ import { AuthContext } from "./AuthContext.js";
 
 export default function Registration() {
   const history = useHistory();
-  var refreshToken = FetchAPI.getRefresh();
-  if (refreshToken){
-    history.push('/')
-  }
   let [errorMessage, setErrorMessage] = useState('');
   var usernameRef = useRef();
   var password1Ref = useRef();
@@ -16,13 +12,19 @@ export default function Registration() {
   var emailRef = useRef();
   const [, setAuth] = React.useContext(AuthContext);
 
+  var refreshToken = FetchAPI.getRefresh();
+  if (refreshToken){
+    setTimeout(()=>history.push('/'), 10);
+    return null;
+  }
+
   var submitButton = (event) => {
       event.preventDefault();
       var password1 = password1Ref.current.value,
           password2 = password2Ref.current.value;
       if (password1 !== password2){
         setErrorMessage('Passwords do not match')
-        return;
+        return null;
       }
       FetchAPI.register(usernameRef.current.value, password1, emailRef.current.value)
       .then(res => {
@@ -49,8 +51,9 @@ export default function Registration() {
             var timer = setInterval(()=>{
               if (FetchAPI.getRefresh()){
                 setAuth(1);
-                history.push('/');
+                setTimeout(()=>history.push('/'), 10);
                 clearInterval(timer);
+                return null;
             }
             }, 10);
             break;

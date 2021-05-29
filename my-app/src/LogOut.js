@@ -4,15 +4,14 @@ import FetchAPI from "./FetchAPI.js";
 import { AuthContext } from "./AuthContext.js";
 
 export default function LogOut() {
-  FetchAPI.clearToken();
   var history = useHistory();
   const [, setAuth] = React.useContext(AuthContext);
+
+  FetchAPI.clearToken();
   setTimeout(()=>{
-    history.push('/login');
     setAuth(0);
+    setTimeout(()=>history.push('/'), 10);
   }, 10);
   
-  return (
-    <div></div>
-  );
+  return null;
 }

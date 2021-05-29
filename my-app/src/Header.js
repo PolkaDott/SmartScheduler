@@ -2,7 +2,7 @@ import React, {useContext} from "react";
 import { Link } from 'react-router-dom';
 import { AuthContext } from "./AuthContext.js";
 
-function Header() {
+export default function Header() {
   const navbarBrandStyle = { fontSize: '25px' }
   const navbarStyle = { fontSize: '23px' }
 
@@ -39,5 +39,3 @@ function Header() {
     </div>
   );
 }
-
-export default Header;

@@ -118,10 +118,12 @@ export default class FetchAPI {
     .catch(res => 0)
   }
 
-  static async fetchWithAuth(url, options) {
-    if (!url || !options)
+  static async fetchM(path, options) {
+    if (!path)
       throw new Error("called FetchAPI.fetchWithAuth without arguments");
-      
+    if (!path.includes(FetchAPI.domain))
+      path = FetchAPI.domain + path
+    
     //let access = FetchAPI.getAccess();
     let refresh = FetchAPI.getRefresh();
 
@@ -132,21 +134,17 @@ export default class FetchAPI {
     /*if (!options.headers) { 
         options.headers = headers;
     }*/
-    throw new Error('метод пока не готов использоваться');
-   /* 
-    if (tokenData) {
-        if (Date.now() >= tokenData.expires_on * 1000) {
-            try {
-                const newToken = await FetchAPI.refreshToken(tokenData.refresh_token); // если истек, то обновляем токен с помощью refresh_token
-                FetchAPI.saveToken(newToken);
-            } catch (Exception) { // если тут что-то пошло не так, то перенаправляем пользователя на страницу авторизации
-              return  window.location.replace(loginUrl);
-            }
-        }
-
-        options.headers.Authorization = `Bearer ${tokenData.token}`; // добавляем токен в headers запроса
+    /*
+    try {
+        const newToken = await FetchAPI.refreshToken(tokenData.refresh_token); // если истек, то обновляем токен с помощью refresh_token
+        FetchAPI.saveToken(newToken);
+    } catch (Exception) { // если тут что-то пошло не так, то перенаправляем пользователя на страницу авторизации
+      return  window.location.replace(loginUrl);
     }
-    return fetch(url, options);
-*/
+
+        //options.headers.Authorization = `Bearer ${tokenData.token}`; // добавляем токен в headers запроса
+    }
+    */
+    return fetch(path, options);
   }
 }

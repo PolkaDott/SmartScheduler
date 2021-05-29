@@ -6,17 +6,21 @@ import { AuthContext } from "./AuthContext.js";
 export default function LogIn() {
   const history = useHistory();
   var refreshToken = FetchAPI.getRefresh();
-  if (refreshToken){
-    history.push('/')
-  }
   let [errorMessage, setErrorMessage] = useState('');
   var usernameRef = useRef();
   var passwordRef = useRef();
   const [, setAuth] = useContext(AuthContext);
 
+  if (refreshToken){
+    setTimeout(()=>history.push('/'), 10);
+    return null;
+  }
+
   var submitButton = (event) => {
     event.preventDefault();
-    FetchAPI.getTokenData(usernameRef.current.value, passwordRef.current.value)
+    var username = usernameRef.current.value;
+    var password = passwordRef.current.value;
+    FetchAPI.getTokenData(username, password)
     .then(res => {
       if (res === 0)
         setErrorMessage('Occured request errors. Write to administrator');
@@ -24,8 +28,10 @@ export default function LogIn() {
         var timer = setInterval(()=>{
           if (FetchAPI.getRefresh()){
             setAuth(1);
-            history.push('/');
+            setTimeout(()=>history.push('/'), 10);
+            localStorage.setItem('username', username);
             clearInterval(timer);
+            return null;
           }
         }, 10);
       }
