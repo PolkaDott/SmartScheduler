@@ -145,6 +145,12 @@ export default class FetchAPI {
         //options.headers.Authorization = `Bearer ${tokenData.token}`; // добавляем токен в headers запроса
     }
     */
-    return fetch(path, options);
+
+    var response = await fetch(path, options);
+    if (response.ok){
+      var answer = await response.json();
+      return answer;
+    }
+    throw new Error('Не удалось выполнить запрос '+path)
   }
 }
