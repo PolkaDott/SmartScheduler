@@ -1,5 +1,6 @@
 body {
   margin: 0;
+  font-size: 22px;
   font-family: 'Segoe UI';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -8,4 +9,20 @@ body {
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+
+a {
+  color: #212529;
+  text-decoration: none;
+  cursor: pointer;
+}
+a:hover{
+  color: #212529;
+}
+
+.container{
+  margin-top: 60px;
+}
+.modal-footer{
+  justify-content: center;
 }

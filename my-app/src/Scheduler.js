@@ -2,6 +2,7 @@ import React, {useState, useContext, useEffect} from "react";
 import { useHistory } from "react-router-dom";
 import FetchAPI from "./FetchAPI.js";
 import { AuthContext } from "./AuthContext.js";
+import ModalAddcase from "./ModalAddcase.js";
 
 export default function Scheduler() {
   const history = useHistory();
@@ -83,8 +84,6 @@ export default function Scheduler() {
     console.log(id + ' changed')
   }
   var casesHtml = []
- 
-  
   for (let i in (cases === null ? [] : cases)){
     casesHtml.push( 
       <div  className="col-12 col-lg-4" key={i}>
@@ -108,51 +107,16 @@ export default function Scheduler() {
     )
   }
           
-  return (
-<div id="popupWin" className="modalwin p-2 p-lg-5"style={{display: "none"}} >
-   <form method="POST" action="{% url 'addcase' %}/{{ day_short }}/">
-      <h2 className="text-center">Add new case</h2>
-      <div className="row">
-         <div className="col-12 col-lg-6">
-            <div className="form-group">
-               <label>Case</label>
-               <input id="case" name="case" type="text" className="form-control" placeholder="Enter case name"/>
-               <small className="form-text text-muted">For example, play Dota</small>
-            </div>
-            <div className="form-group">
-               <label>Case description</label>
-               <input id="case_description" name="case_description" type="text" className="form-control" placeholder="Enter case description"/>
-            </div>
-         </div>
-         <div className="col-12 col-lg-6">
-            <div className="form-group">
-               <label>Case start time</label>
-               <input id="start_time" name="start_time" type="time" className="form-control" placeholder="Start time" onchange="check_time_start()"/>
-               <small className="form-text text-muted">
-                  In a day 24 hours
-                </small>
-            </div>
-            <div className="form-group">
-               <label>Case end time</label>
-               <input id="end_time" name="end_time" type="time" className="form-control" placeholder="End time" onchange="check_time_end()"/>
-            </div>
-         </div>
-      </div>
-      <div id="alert" style={{display: "none"}} className="alert alert-danger" role="alert">
-          Time stamps intersect
-      </div>
-      <div className="d-none d-lg-flex">
-      <h3 className="text-center d-lg-none">Current time chart</h3>
-      <canvas id="oilChart1"></canvas>
-      <div id="free_time">
-      </div>
-      </div>
-      <div className="text-center mt-2">
-      <button id="send_btn" type="submit" value="Send" className="btn btn-primary" disabled="true">Submit</button>
-      </div>
-   </form>
-</div>,
 
+  var menuHtml = []
+  var idDays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
+  for (let i in idDays){
+    menuHtml.push(
+      <li className="list-group-item" key={i}><a href="{% url 'monday' %}" >{idDays[(curDay.getDay() + Number(i)) % 7]}</a></li>
+    )
+  }
+
+return (
 <div className="container">
    <div className="d-lg-none text-center mb-3">
       <div className="btn-group">
@@ -173,41 +137,36 @@ export default function Scheduler() {
    <div className="row">
       <div className="d-none d-lg-flex col-lg-2 order-2 order-lg-1">
          <ul className="list-group list-group-flush text-center">
-            <li className="list-group-item"><a href="{% url 'monday' %}">Monday</a></li>
-            <li className="list-group-item"><a href="{% url 'tuesday' %}">Tuesday</a></li>
-            <li className="list-group-item"><a href="{% url 'wednesday' %}">Wednesday</a></li>
-            <li className="list-group-item"><a href="{% url 'thursday' %}">Thursday</a></li>
-            <li className="list-group-item"><a href="{% url 'friday' %}">Friday</a></li>
-            <li className="list-group-item"><a href="{% url 'saturday' %}">Saturday</a></li>
-            <li className="list-group-item"><a href="{% url 'sunday' %}">Sunday</a></li>
+          {menuHtml}
          </ul>
       </div>
       <div className="col-lg-8 order-1">
-         <p className="d-none d-lg-flex justify-content-lg-center">
-            { "DAYNAME 88 " + curDay }
-         </p>
-         <p className="text-center">
-            You have { "EMPTYTIME 91" } hours free time
-         </p>
-         <p id="case_nums" className="d-none">
-            { "CASES_COUNT 94" }
-         </p>
-         <div className="progress">
-            <div className="progress-bar" role="progressbar" style={{width: "100%"}} aria-valuemin="0" aria-valuemax="100">{ "PROGRESS 97"}%</div> 
-         </div>
-         <br/>
-         <div className="row">
-          {casesHtml}
-           </div> 
+        <p className="d-none d-lg-flex justify-content-lg-center">
+          { path.slice(1,2).toUpperCase() + path.slice(2) +' ' + curDay.toJSON().slice(8, 10) + '.' + curDay.toJSON().slice(5,7) }
+        </p>
+        <p className="text-center">
+          You have { "EMPTYTIME 91" } hours free time
+        </p>
+        <p id="case_nums" className="d-none">
+          { "CASES_COUNT 94" }
+        </p>
+        <div className="progress">
+          <div className="progress-bar" role="progressbar" style={{width: "100%"}} aria-valuemin="0" aria-valuemax="100">{ "PROGRESS 97"}%</div> 
+        </div>
+        <br/>
+        <div className="row">
+        {casesHtml}
+      </div> 
+      </div>
+      <div className="col-12 col-lg-2 order-0 order-lg-3">
+        <ul className="list-group list-group-flush text-center">
+          <li className="list-group-item" ><a data-bs-toggle="modal" data-bs-target="#exampleModal" >Add case</a></li>
+          <li className="list-group-item"><a href="{% url 'setdefault' %}/{{day_short}}/">Set as default</a></li>
+          <li className="list-group-item"><a href="{% url 'resettodefault' %}/{{day_short}}/">Reset cases</a></li>
+        </ul>
       </div>
    </div>
-   <div className="col-12 col-lg-2 order-0 order-lg-3">
-         <ul className="list-group list-group-flush text-center">
-            <li className="list-group-item" onclick="showModalWin()">Add case</li>
-            <li className="list-group-item"><a href="{% url 'setdefault' %}/{{day_short}}/">Set as default</a></li>
-            <li className="list-group-item"><a href="{% url 'resettodefault' %}/{{day_short}}/">Reset cases</a></li>
-         </ul>
-      </div>
+   <ModalAddcase/>
 </div>
 
   );

@@ -5,6 +5,7 @@ import LogOut from './LogOut.js';
 import LogIn from './LogIn.js';
 import HomePage from './HomePage.js';
 import Scheduler from './Scheduler.js';
+import Temp from './Temp.js';
 
 function Main() {
     return (
@@ -20,6 +21,7 @@ function Main() {
         <Route path='/friday' component={Scheduler}/>
         <Route path='/saturday' component={Scheduler}/>
         <Route path='/sunday' component={Scheduler}/>
+        <Route path='/temp' component={Temp}/>
       </Switch>
     );
 }
