@@ -119,11 +119,10 @@ export default class FetchAPI {
   }
 
   static async fetchM(path, body) {
-    console.log(body);
     if (!path)
       throw new Error("called FetchAPI.fetchWithAuth without arguments");
     if (!path.includes(FetchAPI.domain))
-      path = FetchAPI.domain + path
+      path = FetchAPI.domain + path;
     
     //let access = FetchAPI.getAccess();
     let refresh = FetchAPI.getRefresh();

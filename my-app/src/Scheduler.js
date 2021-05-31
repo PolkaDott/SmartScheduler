@@ -1,4 +1,5 @@
 import React, {useState, useContext, useEffect} from "react";
+import { Link } from 'react-router-dom';
 import { useHistory } from "react-router-dom";
 import FetchAPI from "./FetchAPI.js";
 import { AuthContext } from "./AuthContext.js";
@@ -67,7 +68,7 @@ export default function Scheduler() {
       })
       setCases(res);
     })
-  }, [isNewCases])
+  }, [isNewCases, path])
   var refresh = FetchAPI.getRefresh();
   if (!refresh || !username){
     setAuth(0);
@@ -85,7 +86,7 @@ export default function Scheduler() {
   var casesHtml = []
   for (let i in (cases === null ? [] : cases)){
     casesHtml.push( 
-      <div  className="col-12 col-lg-4" key={i}>
+      <div  className="col-12 col-lg-4 onecase" key={i}>
           <div style={{height: "250px", width: "240px"}} className="card mb-4 ">
             <div className="card-body">
                 <h5 className="card-title">
@@ -106,12 +107,16 @@ export default function Scheduler() {
     )
   }
           
-
   var menuHtml = []
+  var dropdownMenuHtml = []
   var idDays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
   for (let i in idDays){
+    var j = ((new Date).getDay() + Number(i)) % 7;
     menuHtml.push(
-      <li className="list-group-item" key={i}><a href="{% url 'monday' %}" >{idDays[(curDay.getDay() + Number(i)) % 7]}</a></li>
+      <li className="list-group-item" key={i}><Link to={'/'+idDays[j].toLowerCase()}>{idDays[j]}</Link></li>
+    )
+    dropdownMenuHtml.push(
+      <li className="dropdown-item" key={i}><Link to={'/'+idDays[j].toLowerCase()}>{idDays[j]}</Link></li>
     )
   }
 
@@ -119,17 +124,11 @@ return (
 <div className="container">
    <div className="d-lg-none text-center mb-3">
       <div className="btn-group">
-         <button type="button" className="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-         { "DAYNAME 61" }
+         <button type="button" className="btn btn-secondary dropdown-toggle" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+         {  path.slice(1,2).toUpperCase() + path.slice(2)}
          </button>
-         <div className="dropdown-menu">
-            <a className="dropdown-item" href="{% url 'monday' %}">Monday</a>
-            <a className="dropdown-item" href="{% url 'tuesday' %}">Tuesday</a>
-            <a className="dropdown-item" href="{% url 'wednesday' %}">Wednesday</a>
-            <a className="dropdown-item" href="{% url 'thursday' %}">Thursday</a>
-            <a className="dropdown-item" href="{% url 'friday' %}">Friday</a>
-            <a className="dropdown-item" href="{% url 'saturday' %}">Saturday</a>
-            <a className="dropdown-item" href="{% url 'sunday' %}">Sunday</a>
+         <div className="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+          {dropdownMenuHtml}
          </div>
       </div>
    </div>
