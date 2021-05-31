@@ -26,3 +26,7 @@ a:hover{
 .modal-footer{
   justify-content: center;
 }
+
+.alert {
+  margin-top: 10px;
+}

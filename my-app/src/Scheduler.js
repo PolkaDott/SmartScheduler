@@ -57,19 +57,18 @@ export default function Scheduler() {
       })
       res = res.filter(function (onecase) {
         var caseDate = onecase['date'];
-        if (curDay.getFullYear() !== caseDate.slice(0,4)) // years
+        if (curDay.getFullYear() != caseDate.slice(0,4)) // years
           return false;
-        if (curDay.getMonth()+1 !== caseDate.slice(5,7)) // months
+        if (Number(curDay.getMonth()) + 1 != caseDate.slice(5,7)) // months
           return false;
-        if (curDay.getDate() !== caseDate.slice(8, 10)) //days
+        if (curDay.getDate() != caseDate.slice(8, 10)) //days
           return false;
         return true;
       })
       setCases(res);
     })
-  }, [isNewCases, username])
+  }, [isNewCases])
   var refresh = FetchAPI.getRefresh();
-
   if (!refresh || !username){
     setAuth(0);
     FetchAPI.clearToken();
@@ -93,8 +92,8 @@ export default function Scheduler() {
                   <div id="{{ case.6 }}_name">Case - {cases[i].name}</div>
                 </h5>
                 <h6 className="card-subtitle mb-2 text-muted">
-                  <div id="{{ case.6 }}_start">Case start - { cases[i].start_time }</div>
-                  <div id="{{ case.6 }}_end">Case end - { cases[i].end_time }</div>
+                  <div id="{{ case.6 }}_start">Case start - { cases[i].start_time.slice(0,5) }</div>
+                  <div id="{{ case.6 }}_end">Case end - { cases[i].end_time.slice(0,5) }</div>
                 </h6>
                 <div className="d-flex justify-content-around mb-3">
                   <button onClick={()=> buttonDelete(i)} className="btn btn-secondary">Delete</button>
@@ -166,7 +165,7 @@ return (
         </ul>
       </div>
    </div>
-   <ModalAddcase/>
+   <ModalAddcase username={username} cases={cases} day={curDay} setCases={setCases}/>
 </div>
 
   );

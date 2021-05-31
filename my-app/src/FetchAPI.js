@@ -118,7 +118,8 @@ export default class FetchAPI {
     .catch(res => 0)
   }
 
-  static async fetchM(path, options) {
+  static async fetchM(path, body) {
+    console.log(body);
     if (!path)
       throw new Error("called FetchAPI.fetchWithAuth without arguments");
     if (!path.includes(FetchAPI.domain))
@@ -131,6 +132,19 @@ export default class FetchAPI {
       return window.location.replace('/login');
     }
 
+    if (body){
+      var formData = new FormData();
+      for (let key of Object.keys(body))
+        formData.append(key, body[key]);
+      var options = {
+        method: 'POST',
+        headers: FetchAPI.headers,
+        body: formData,
+        redirect: 'follow'
+      };
+    }
+    else
+      options = {}
     /*if (!options.headers) { 
         options.headers = headers;
     }*/
