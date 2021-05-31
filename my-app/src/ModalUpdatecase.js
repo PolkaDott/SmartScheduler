@@ -1,8 +1,7 @@
 import React, {useState, useEffect} from "react";
 import FetchAPI from './FetchAPI.js';
-import OilCanvas from './OilCanvas.js';
 
-export default function ModalAddcase(props){
+export default function ModalUpdatecase(props){
   var [name, setName] = useState('');
   var [desc, setDesc] = useState('');
   var [start, setStart] = useState('');
@@ -119,7 +118,6 @@ export default function ModalAddcase(props){
                 <div id="free_time">
                 </div>
               </div>
-              <OilCanvas cases={cases}></OilCanvas>
           </div>
           <div className="modal-footer text-center mt-2">
               <button value="Send" className="btn btn-primary" disabled={!isValid} data-bs-dismiss="modal" onClick={handleSubmit}>Submit</button>

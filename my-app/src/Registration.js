@@ -3,6 +3,50 @@ import FetchAPI from './FetchAPI';
 import { useHistory } from "react-router-dom";
 import { AuthContext } from "./AuthContext.js";
 
+function setDefaults(user){
+  var today = new Date();
+  for (let i in [0,1,2,3,4,5,6]){
+    var day = new Date();
+    day.setDate(Number(day.getDate()) + Number(i));
+    var month = Number(day.getMonth()) + 1;
+    month = month < 10 ? '0' + month : month;
+    var date = day.getFullYear() + '-' + month + '-' + day.getDate();
+    
+    if (day.getDay() % 6){
+      FetchAPI.fetchM('timetable/create_user_task/', 
+      {
+        user : user,
+        date : date,
+        start_time : '00:00',
+        end_time : '07:00',
+        name : 'Dream',
+        description : '7 hours of healthy sleep'
+      });
+      FetchAPI.fetchM('timetable/create_user_task/', 
+      {
+        user : user,
+        date : date,
+        start_time : '08:00',
+        end_time : '17:00',
+        name : 'Job',
+        description : 'Work hard'
+      });
+    }
+    else {
+      FetchAPI.fetchM('timetable/create_user_task/', 
+      {
+        user : user,
+        date : date,
+        start_time : '00:00',
+        end_time : '10:00',
+        name : 'Dream',
+        description : 'Big holiday sleep!'
+      });
+    }
+    
+  }
+}
+
 export default function Registration() {
   const history = useHistory();
   let [errorMessage, setErrorMessage] = useState('');
@@ -26,14 +70,15 @@ export default function Registration() {
         setErrorMessage('Passwords do not match')
         return null;
       }
-      FetchAPI.register(usernameRef.current.value, password1, emailRef.current.value)
+      var username = usernameRef.current.value;
+      FetchAPI.register(username, password1, emailRef.current.value)
       .then(res => {
         switch(res){
           case 0:
             setErrorMessage('Occured request error. Write to administrator')
             break;
           case 14:
-            setErrorMessage('This username already exist')
+            setErrorMessage('This username already exists')
             break;
           case 15:
             setErrorMessage('This email is invalid')
@@ -53,6 +98,7 @@ export default function Registration() {
                 setAuth(1);
                 setTimeout(()=>history.push('/'), 10);
                 clearInterval(timer);
+                setDefaults(username);
                 return null;
             }
             }, 10);

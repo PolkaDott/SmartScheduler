@@ -1,6 +1,6 @@
 export default class FetchAPI {
   static domain = 'http://188.225.83.42:7070/'
-  static headers = {
+  static defaultHeaders = {
 
   }
 
@@ -93,7 +93,7 @@ export default class FetchAPI {
     .catch(res => 0)
   }
 
-  static refreshToken() {
+  static async refreshToken() {
     var refresh = FetchAPI.getRefresh();
     if (!refresh)
       throw new Error("Error in FetchAPI.refreshToken: localStorage has no refresh token");
@@ -105,17 +105,13 @@ export default class FetchAPI {
       body: formData,
       redirect: 'follow'
     };
-    return fetch(FetchAPI.domain+'auth/login/refresh/', requestOptions)
-    .then((res) => {
-      if (res.ok) {
-        res.json().then(data=>{
-          FetchAPI.saveToken(null, data.access);
-          return res.status;
-        });
-      }
-      return res.status;
-    })
-    .catch(res => 0)
+    var res = await fetch(FetchAPI.domain+'auth/login/refresh/', requestOptions)
+    if (res.ok){
+      var data = await res.json();
+      FetchAPI.saveToken(null, data.access);
+      return data.access;
+    }
+    window.location.replace('/login');
   }
 
   static async fetchM(path, body) {
@@ -124,12 +120,15 @@ export default class FetchAPI {
     if (!path.includes(FetchAPI.domain))
       path = FetchAPI.domain + path;
     
-    //let access = FetchAPI.getAccess();
+    let access = FetchAPI.getAccess();
     let refresh = FetchAPI.getRefresh();
 
-    if(!refresh) {
+    if(!refresh || !access) {
       return window.location.replace('/login');
     }
+    var headers = FetchAPI.defaultHeaders;
+    headers['Authorization'] = 'Bearer '+access;
+    
 
     if (body){
       var formData = new FormData();
@@ -137,32 +136,28 @@ export default class FetchAPI {
         formData.append(key, body[key]);
       var options = {
         method: 'POST',
-        headers: FetchAPI.headers,
+        headers: headers,
         body: formData,
         redirect: 'follow'
       };
     }
     else
       options = {}
-    /*if (!options.headers) { 
-        options.headers = headers;
-    }*/
-    /*
-    try {
-        const newToken = await FetchAPI.refreshToken(tokenData.refresh_token); // если истек, то обновляем токен с помощью refresh_token
-        FetchAPI.saveToken(newToken);
-    } catch (Exception) { // если тут что-то пошло не так, то перенаправляем пользователя на страницу авторизации
-      return  window.location.replace(loginUrl);
-    }
-
-        //options.headers.Authorization = `Bearer ${tokenData.token}`; // добавляем токен в headers запроса
-    }
-    */
 
     var response = await fetch(path, options);
     if (response.ok){
       var answer = await response.json();
       return answer;
+    }
+    if (response.status == 401){
+      await FetchAPI.refreshToken();
+      headers['Authorization'] = 'Bearer '+ FetchAPI.getAccess();
+
+      response = await fetch(path, options);
+      if (response.ok){
+        var answer = await response.json();
+        return answer;
+      }
     }
     throw new Error('Не удалось выполнить запрос '+path)
   }
