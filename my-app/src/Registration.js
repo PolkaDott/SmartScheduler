@@ -92,6 +92,12 @@ export default function Registration() {
           case 18:
             setErrorMessage('This password is too common')
             break;
+          case 19:
+            setErrorMessage('This password is too common')
+            break;
+          case 20:
+            setErrorMessage('This password has only digits')
+            break;
           case 200: case 201:
             var timer = setInterval(()=>{
               if (FetchAPI.getRefresh()){

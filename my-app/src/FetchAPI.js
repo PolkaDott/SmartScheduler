@@ -86,6 +86,10 @@ export default class FetchAPI {
               return 17;
             else if (res.includes('too common'))
               return 18;
+            else if (res.includes('широко распространён'))
+              return 19;
+            else if (res.includes('только из цифр'))
+              return 20;
             else return res.status;
           })
         }
