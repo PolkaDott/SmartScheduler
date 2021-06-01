@@ -122,20 +122,20 @@ export default function Registration() {
               <form onSubmit={submitButton}>
                   <div className="form-group">
                     <label htmlFor="Input1">Enter your username</label>
-                    <input ref={usernameRef} type="text" id="Input1" name="name" className="form-control" placeholder="Enter username" required/>
+                    <input ref={usernameRef} type="text" id="Input1" name="name" className="form-control mb-3" placeholder="Enter username" required/>
                   </div>
                   <div className="form-group">
                     <label htmlFor="Input2">Enter your email address</label>
-                    <input ref={emailRef} type="email" id="Input2" name="mail" className="form-control" placeholder="Enter email" required/>
+                    <input ref={emailRef} type="email" id="Input2" name="mail" className="form-control mb-3" placeholder="Enter email" required/>
                     <small id="emailHelp" className="form-text text-muted">We will never share your email with anyone else :)</small>
                   </div>
                   <div className="form-group">
                     <label htmlFor="Input3">Enter your password</label>
-                    <input ref={password1Ref} type="password" className="form-control" id="Input3" placeholder="Password" required/>
+                    <input ref={password1Ref} type="password" className="form-control mb-3" id="Input3" placeholder="Password" required/>
                   </div>
                   <div className="form-group">
                     <label htmlFor="Input4">Confirm your password</label>
-                    <input ref={password2Ref}  type="password" name="some_content" className="form-control" id="Input4" placeholder="Confirm Password" required/>
+                    <input ref={password2Ref}  type="password" name="some_content" className="form-control mb-3" id="Input4" placeholder="Confirm Password" required/>
                   </div>
                   { errorMessage &&
                     <div id="alert" className="alert alert-danger text-center" role="alert">

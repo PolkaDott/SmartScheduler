@@ -113,13 +113,13 @@ export default function ModalAddcase(props){
                   {errorMessage}
                 </div>
               }
-              <div className="d-none d-lg-flex">
+              {/*<div className="d-none d-lg-flex">
                 <h3 className="text-center d-lg-none">Current time chart</h3>
                 <canvas id="oilChart1"></canvas>
                 <div id="free_time">
                 </div>
               </div>
-              <OilCanvas cases={cases}></OilCanvas>
+              {/*<OilCanvas cases={cases}></OilCanvas>*/}
           </div>
           <div className="modal-footer text-center mt-2">
               <button value="Send" className="btn btn-primary" disabled={!isValid} data-bs-dismiss="modal" onClick={handleSubmit}>Submit</button>

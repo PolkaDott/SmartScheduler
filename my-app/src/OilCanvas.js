@@ -9,14 +9,14 @@ export default function OilCanvas(props){
   var cases_labels = [];
   var full_day = []
   full_day.length = 24
-  for (var i = 0; i < 24; i++) full_day[i] = "Free";
+  for (var i = 1; i <= 24; i++) full_day[i] = "Free";
   for (var i = 0; i < case_nums; i++)
   {
-    console.log(cases[i])
-      cases_times[i] = Number(cases[i]['end_time'].slice(0,2)) - Number(cases[i]['start_time'].slice(0,2));
+    var h = i + 1;
+      cases_times[i+1] = Number(cases[i]['end_time'].slice(0,2)) - Number(cases[i]['start_time'].slice(0,2));
       //cases_times[i] = document.getElementById(i+"_duration").textContent;
       //cases_labels[i] = document.getElementById(i+"_name").textContent;
-      cases_labels[i] = cases[i]['name'];
+      cases_labels[i+1] = cases[i]['name'];
       
       //var start_time =  document.getElementById(i+"_start").textContent.toString().slice(-2);
       var start_time = Number(cases[i]['start_time'].slice(0,2));
@@ -24,7 +24,7 @@ export default function OilCanvas(props){
       //var end_time =  Number(document.getElementById(i+"_end").textContent.toString().slice(-2));
       for (var j = start_time; j <= end_time; j++){
           //full_day[j] = document.getElementById(i+"_name").textContent.toString().slice(7);
-          full_day[j] = cases_labels[i];
+          full_day[j+1] = cases_labels[i+1];
       }
   }
 

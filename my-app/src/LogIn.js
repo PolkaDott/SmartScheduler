@@ -49,11 +49,11 @@ export default function LogIn() {
             <form onSubmit={submitButton} >
                 <div className="form-group">
                   <label htmlFor="Input2">Enter your username</label>
-                  <input ref={usernameRef} type="text" id="Input2" className="form-control" placeholder="Enter username" required/>
+                  <input ref={usernameRef} type="text" id="Input2" className="mb-3 form-control" placeholder="Enter username" required/>
                 </div>
                 <div className="form-group">
                   <label htmlFor="Input1">Enter your password</label>
-                  <input ref={passwordRef} type="password" className="form-control" id="Input1" placeholder="Password" required/>
+                  <input ref={passwordRef} type="password" className="form-control mb-3" id="Input1" placeholder="Password" required/>
                 </div>
                 { 
                   errorMessage &&
