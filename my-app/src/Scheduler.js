@@ -93,7 +93,7 @@ export default function Scheduler() {
   var casesHtml = []
   for (let i in (cases === null ? [] : cases)){
     casesHtml.push(
-      <div  className="col-12 col-lg-4" key={i}>
+      <div  className="col-12 col-lg-4 d-flex justify-content-center" key={i}>
           <div style={{height: "250px", width: "240px"}} className="card mb-4 ">
             <div className="card-body">
                 <h5 className="card-title">
